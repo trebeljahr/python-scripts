@@ -4,6 +4,7 @@ import sys
 import os
 import datetime
 import exifread
+from tqdm import tqdm
 
 
 def main():
@@ -42,12 +43,14 @@ def listExif(name, path, existingDates):
         tags = exifread.process_file(f)
         # print(name)
         # print(tags["Image DateTime"])
-        strDate = str(tags["Image DateTime"])
-        if strDate not in existingDates:
-            existingDates[strDate] = name
-        else:
-            print("There seems to be a duplicate between {} and {}".format(
-                existingDates[strDate], name))
+        if "Image DateTime" in tags:
+            strDate = str(tags["Image DateTime"])
+            if strDate not in existingDates:
+                existingDates[strDate] = name
+            else:
+                print("There seems to be a duplicate between {} and {}".format(
+                    existingDates[strDate], name))
+
         # with Raw(filename=imgPath) as raw:
         #     print(raw.metadata)
 
